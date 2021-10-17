@@ -1,0 +1,9 @@
+#form.shadow.p-4
+  = form_with do |form|
+    .mb-3
+      = form.label :country, "Country", class: "form-label"
+      = form.select :country, countries_to_array(@countries), { include_blank: true, selected: @country_code }, { class: "form-select" }
+    .mb-3
+      = form.label :stations, "#{@stations.count} Stations", class: "form-label"
+      = form.select :stations, stations_to_array(@stations), { include_blank: true }, { class: "form-select" }
+      

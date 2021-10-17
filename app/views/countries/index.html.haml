@@ -1,0 +1,10 @@
+#countries.h-100.d-flex.justify-content-center.align-items-center
+  #form.shadow.p-4.w-50
+    = form_with url: stations_path, method: :get do |form|
+      .mb-3
+        = form.label :country_code, "Country", class: "form-label"
+        = form.select :country_code, countries_to_array(@countries), { include_blank: true }, { class: "form-select", onchange: "this.form.submit()" }
+      .mb-3
+        = form.label :station_id, "Stations", class: "form-label"
+        = form.select :station_id, [], { include_blank: true }, { class: "form-select", disabled: true }
+    
