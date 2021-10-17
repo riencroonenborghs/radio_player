@@ -1,5 +1,5 @@
-#countries.h-100.d-flex.justify-content-center.align-items-center
-  #form.shadow.p-4.w-50
+#countries
+  #form.p-4
     = form_with url: stations_path, method: :get do |form|
       .mb-3
         = form.label :country_code, "Country", class: "form-label"
@@ -9,20 +9,21 @@
         = form.select :station_id, stations_to_array(@stations), { include_blank: true, selected: @station&.id }, { class: "form-select", onchange: "this.form.submit()", onchange: "this.form.submit()" }
       - if @station
         .mb-3
-          .display-5.d-flex.justify-content-between
-            %div
+          .row
+            .col-8.display-6
               - if @station.website
                 =link_to @station.name, @station.website, class: "text-decoration-none link-secondary"
               - else
                 =@station.name
-            #audio-player(data-audio-src="#{@station.stream_url}")
-              =link_to "#", class: "play btn btn-light me-1" do
-                %i.bi.bi-play
-              =link_to "#", class: "playing btn btn-light me-1 d-none" do
-                %i.bi.bi-play-fill
-              =link_to "#", class: "pause btn btn-light me-1" do
-                %i.bi.bi-pause
-              =link_to "#", class: "paused btn btn-light me-1 d-none" do
-                %i.bi.bi-pause-fill
-          .fs-10.fw-lighter=@station.description
-        
+            .col-4
+              #audio-player(data-audio-src="#{@station.stream_url}")
+                =link_to "#", class: "play btn btn-light me-1" do
+                  %i.bi.bi-play
+                =link_to "#", class: "playing btn btn-light me-1 d-none" do
+                  %i.bi.bi-play-fill
+                =link_to "#", class: "pause btn btn-light me-1" do
+                  %i.bi.bi-pause
+                =link_to "#", class: "paused btn btn-light me-1 d-none" do
+                  %i.bi.bi-pause-fill
+            .fs-10.fw-lighter=@station.description
+          
