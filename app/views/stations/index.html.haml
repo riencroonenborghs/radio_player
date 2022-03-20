@@ -1,4 +1,13 @@
 #countries
+  - if @starred.any?
+    .row.p-4.pb-0.pt-2
+      %h4 Starred
+      %ul.list-group
+        - @starred.each do |star|
+          %li.list-group-item
+            = link_to stations_path(country_code: star.country_code, station_id: star.id) do
+              = @countries[star.country_code]
+              = star.name
   #form.p-4
     = form_with url: stations_path, method: :get do |form|
       .mb-3
@@ -6,16 +15,27 @@
         = form.select :country_code, countries_to_array(@countries), { include_blank: true, selected: @country_code }, { class: "form-select", onchange: "this.form.submit()" }
       .mb-3
         = form.label :station_id, "#{@stations.count} Stations", class: "form-label"
-        = form.select :station_id, stations_to_array(@stations), { include_blank: true, selected: @station&.id }, { class: "form-select", onchange: "this.form.submit()", onchange: "this.form.submit()" }
+        = form.select :station_id, stations_to_array(@stations), { include_blank: true, selected: @station&.id }, { class: "form-select", onchange: "this.form.submit()" }
       - if @station
         .mb-3
           .row
-            .col-8.display-6
+            .col-12.display-6
+              - if starred?(@country_code, @station.id)
+                = link_to unstar_path(@country_code, @station.id), class: "btn btn-white" do
+                  %i.bi.bi-star-fill
+              - else
+                = link_to star_path(@country_code, @station.id), class: "btn btn-white" do
+                  %i.bi.bi-star
+
               - if @station.website
                 =link_to @station.name, @station.website, class: "text-decoration-none link-secondary"
               - else
                 =@station.name
-            .col-4
+          .row
+            .col-12
+              .fs-10.fw-lighter=@station.description
+          .row
+            .col-12.d-flex.justify-content-end
               #audio-player(data-audio-src="#{@station.stream_url}")
                 =link_to "#", class: "play btn btn-light me-1" do
                   %i.bi.bi-play
@@ -25,5 +45,16 @@
                   %i.bi.bi-pause
                 =link_to "#", class: "paused btn btn-light me-1 d-none" do
                   %i.bi.bi-pause-fill
-            .fs-10.fw-lighter=@station.description
+
+            -# .col-4
+            -#   #audio-player(data-audio-src="#{@station.stream_url}")
+            -#     =link_to "#", class: "play btn btn-light me-1" do
+            -#       %i.bi.bi-play
+            -#     =link_to "#", class: "playing btn btn-light me-1 d-none" do
+            -#       %i.bi.bi-play-fill
+            -#     =link_to "#", class: "pause btn btn-light me-1" do
+            -#       %i.bi.bi-pause
+            -#     =link_to "#", class: "paused btn btn-light me-1 d-none" do
+            -#       %i.bi.bi-pause-fill
+            -# .fs-10.fw-lighter=@station.description
           
